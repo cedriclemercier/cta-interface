@@ -1,0 +1,79 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .image-list {
+        border: 1px solid #010101;
+    }
+</style>
+<div class="container-fluid py-4">
+
+    <div class="row">
+        <div class="col-xl-3 col-sm-6" style="border: 1px solid #010101; background-color: #ded6d6">
+            <div class="card-header pb-3">
+                <h3>Upload images</h3>
+                {% include "includes/upload.html" %}
+            </div>
+            <form method="post">
+            <div class="card-body p-2 {% if images %}image-list{%endif%}">
+                <div class="row">
+                    {% for image in images %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="position-relative">
+                                <input type="hidden" name="submitImage" value="{{image}}" />
+                                <img class="img-fluid shadow" src="{% static '\cta-images\dicom/' %}{{ image }}"
+                                alt="{{ image }}">
+                            </div>
+                            <div class="card-body px-1 py-2">
+                                <p class="text-gradient text-dark mb-2 text-sm">{{image}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- {% for image in images %}
+                    <script>
+                            cornerstone.loadImage('{{ image.file.url }}').then(function(image) {
+                                cornerstone.displayImage('dicomViewer', image);
+                            });
+                        </script>
+                        {% endfor %} -->
+                </div>
+            </div>
+            {%if images %}
+            
+                {% csrf_token %}
+                <button type="submit" class="btn btn-xl bg-gradient-primary mt-3 w-70" >Analyse</button>
+            </form>
+            {%endif%}
+        </div>
+
+        <div class="col-lg-9" style="background-color:#ffffff">
+            <div class="card-header pb-3">
+                <h3>Display results</h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    {%if result %}
+                    <img src="{% static 'cta-images/result/' %}{{result}}" alt="Example Image">
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "includes/footer.html" %}
+
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block scripts %}
+<!-- Include CornerstoneJS from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/cornerstone-core@2.2.2/dist/cornerstone.js"></script>
+
+{% endblock scripts %}

@@ -1,0 +1,8 @@
+<!-- upload_file.html -->
+<form method="post" enctype="multipart/form-data" id="uploadForm">
+    {% csrf_token %}
+    <!-- {{ form.as_p }} -->
+    <input type="hidden" name="uploadForm">
+    <input required name="images" type="file" multiple class="form-control-file">
+    <button type="submit">Upload</button>
+</form>
